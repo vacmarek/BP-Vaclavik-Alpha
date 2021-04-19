@@ -302,7 +302,7 @@ InputManager:
     altNegativeButton: 
     altPositiveButton: 
     gravity: 0
-    dead: 0.05
+    dead: 0.2
     sensitivity: 0.5
     snap: 0
     invert: 0
@@ -318,7 +318,7 @@ InputManager:
     altNegativeButton: 
     altPositiveButton: 
     gravity: 0
-    dead: 0.05
+    dead: 0.2
     sensitivity: 0.5
     snap: 0
     invert: 0
@@ -334,7 +334,7 @@ InputManager:
     altNegativeButton: 
     altPositiveButton: 
     gravity: 0
-    dead: 0.05
+    dead: 0.2
     sensitivity: 0.5
     snap: 0
     invert: 0
@@ -350,7 +350,7 @@ InputManager:
     altNegativeButton: 
     altPositiveButton: 
     gravity: 0
-    dead: 0.05
+    dead: 0.2
     sensitivity: 0.5
     snap: 0
     invert: 1
@@ -646,35 +646,35 @@ InputManager:
     axis: 18
     joyNum: 1
   - serializedVersion: 3
-    m_Name: TakeOff
+    m_Name: Reset
     descriptiveName: 
     descriptiveNegativeName: 
     negativeButton: 
     positiveButton: joystick button 3
     altNegativeButton: 
     altPositiveButton: 
-    gravity: 0
-    dead: 0.01
+    gravity: 1
+    dead: 0.1
     sensitivity: 1
     snap: 0
     invert: 0
-    type: 2
+    type: 0
     axis: 18
     joyNum: 0
   - serializedVersion: 3
-    m_Name: Land
+    m_Name: ToggleMesh
     descriptiveName: 
     descriptiveNegativeName: 
     negativeButton: 
     positiveButton: joystick button 1
     altNegativeButton: 
     altPositiveButton: 
-    gravity: 0
-    dead: 0.01
+    gravity: 1
+    dead: 0.1
     sensitivity: 1
     snap: 0
     invert: 0
-    type: 2
+    type: 0
     axis: 19
     joyNum: 0
   - serializedVersion: 3
@@ -1158,34 +1158,50 @@ InputManager:
     axis: 2
     joyNum: 0
   - serializedVersion: 3
-    m_Name: ToggleAutopilot
+    m_Name: ChangeCamera
     descriptiveName: 
     descriptiveNegativeName: 
     negativeButton: 
     positiveButton: joystick button 2
     altNegativeButton: 
     altPositiveButton: 
-    gravity: 0
-    dead: 0.01
+    gravity: 1
+    dead: 0.1
     sensitivity: 1
     snap: 0
     invert: 0
-    type: 2
+    type: 0
     axis: 2
     joyNum: 0
   - serializedVersion: 3
-    m_Name: StartEngines
+    m_Name: ToggleMissions
     descriptiveName: 
     descriptiveNegativeName: 
     negativeButton: 
     positiveButton: joystick button 0
     altNegativeButton: 
     altPositiveButton: 
-    gravity: 0
-    dead: 0.01
+    gravity: 1
+    dead: 0.1
     sensitivity: 1
     snap: 0
     invert: 0
-    type: 2
+    type: 0
+    axis: 2
+    joyNum: 0
+  - serializedVersion: 3
+    m_Name: ToggleScales
+    descriptiveName: 
+    descriptiveNegativeName: 
+    negativeButton: 
+    positiveButton: joystick button 4
+    altNegativeButton: 
+    altPositiveButton: 
+    gravity: 1
+    dead: 0.1
+    sensitivity: 1
+    snap: 0
+    invert: 0
+    type: 0
     axis: 2
     joyNum: 0

@@ -1,4 +1,12 @@
-﻿using System.Collections;
+﻿/*
+ * Head Up Display - manages visualizasion of HUD information
+ * 
+ * author: Marek Václavík
+ * login: xvacla26
+ * 
+ */
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -14,10 +22,9 @@ namespace UnityControllerForTello
         Transform batteryIndicator;
         RectTransform HUD;
         RectTransform navigationArrow;
+        RectTransform canvas;
         Transform mirrorDrone;
-
-
-
+        float altitude;
 
         // Start is called before the first frame update
         public void CustomStart()
@@ -29,8 +36,10 @@ namespace UnityControllerForTello
             navigationArrow = GameObject.Find("NavigationArrow").GetComponent<RectTransform>();
             HUD = transform.gameObject.GetComponent<RectTransform>();
             mirrorDrone = GameObject.Find("MirrorDrone").transform;
+            canvas = GameObject.Find("Canvas").GetComponent<RectTransform>();
 
         }
+
         /// <summary>
         /// Counts the bounding box corners of the given RectTransform that are visible from the given Camera in screen space.
         /// </summary>
@@ -80,6 +89,19 @@ namespace UnityControllerForTello
             return CountCornersVisibleFrom(rectTransform, camera) > 0; // True if any corners are visible
         }
 
+        public void CheckAltitude()
+        {
+            RaycastHit hit;
+            Ray ray1 = new Ray(this.drone.transform.position, Vector3.down);
+            if (Physics.SphereCast(ray1, 0.01f, out hit))
+            {
+                if (hit.transform.gameObject.layer == 31)
+                {
+                    altitude = hit.distance;
+                }
+            }
+        }
+
         // Update is called once per frame
         void Update()
         {
@@ -87,23 +109,25 @@ namespace UnityControllerForTello
             Text distance = HUD.GetChild(0).gameObject.GetComponent<Text>(); // TODO
             distance.text = Mathf.Round(dist * 100.0f) * 0.01f + "m";
             //TODO
-            Text Altitude = HUD.GetChild(1).gameObject.GetComponent<Text>();//TODO
-            float altit = Vector3.Distance(new Vector3(0.0f, 0.0f, 0.0f), new Vector3(0.0f, drone.position.y, 0.0f));//todo pohrat si s podlahou
-            Altitude.text = Mathf.Round(altit * 100.0f) * 0.01f + "m";
-
-            altitudeIndicator.GetChild(0).GetChild(0).GetChild(1).localScale = new Vector3(altitudeIndicator.GetChild(0).GetChild(0).GetChild(1).localScale.x, altit * 50, altitudeIndicator.GetChild(0).GetChild(0).GetChild(1).localScale.z);
-            float altitposition = -174.0f + (altit * 50) / 2;
+            CheckAltitude();
+            Text Altitude = HUD.GetChild(1).gameObject.GetComponent<Text>();
+            //float altit = Vector3.Distance(new Vector3(0.0f, 0.0f, 0.0f), new Vector3(0.0f, drone.position.y, 0.0f));//todo pohrat si s podlahou
+            Altitude.text = Mathf.Round(altitude * 100.0f) * 0.01f + "m";
+            Debug.Log("vyska: " + this.altitude);
+            altitudeIndicator.GetChild(0).GetChild(0).GetChild(1).localScale = new Vector3(altitudeIndicator.GetChild(0).GetChild(0).GetChild(1).localScale.x, altitude * 50, altitudeIndicator.GetChild(0).GetChild(0).GetChild(1).localScale.z);
+            float altitposition = -174.0f + (altitude * 50) / 2;
             altitudeIndicator.GetChild(0).GetChild(0).GetChild(1).localPosition = new Vector3(altitudeIndicator.GetChild(0).GetChild(0).GetChild(1).localPosition.x, altitposition, altitudeIndicator.GetChild(0).GetChild(0).GetChild(1).localPosition.z);
 
-            //posun textu vysky podle vysky
-            HUD.GetChild(1).localPosition = new Vector3(HUD.GetChild(1).localPosition.x, -88 + (altit * 50) / 2, HUD.GetChild(1).localPosition.z);
+            //posun textu vysky podle vysky // *50 kvuli timestep = 0.02
+            HUD.GetChild(1).localPosition = new Vector3(HUD.GetChild(1).localPosition.x, -88 + (altitude * 50) / 2, HUD.GetChild(1).localPosition.z); //TODO
+            
             //vykreslovani barvy u vyskomeru podle vysky
             var altitutudeRenderer = altitudeIndicator.GetChild(0).GetChild(0).GetChild(1).gameObject.GetComponent<Renderer>();
-            if (altit < 0.5f)
+            if (altitude < 0.5f)
             {
                 altitutudeRenderer.material.SetColor("_Color", Color.red);
             }
-            else if (altit < 1.0f)
+            else if (altitude < 1.0f)
             {
                 altitutudeRenderer.material.SetColor("_Color", Color.yellow);
             }
@@ -113,58 +137,63 @@ namespace UnityControllerForTello
             }
 
 
-            Text battery = HUD.GetChild(3).gameObject.GetComponent<Text>(); //TODO
+            Text battery = HUD.GetChild(2).gameObject.GetComponent<Text>(); //TODO
             float batt = (600 - Time.time) / 6; //random
             battery.text = Mathf.Round(batt * 10.0f) * 0.1f + "%";
             if (batt < 15.0f)
             {
-                batteryIndicator.GetChild(0).gameObject.active = false;
+                batteryIndicator.GetChild(0).gameObject.SetActive(false);
             }
             else if (batt < 35.0f)
             {
-                batteryIndicator.GetChild(1).gameObject.active = false;
+                batteryIndicator.GetChild(1).gameObject.SetActive(false);
             }
             else if (batt < 55.0f)
             {
-                batteryIndicator.GetChild(2).gameObject.active = false;
+                batteryIndicator.GetChild(2).gameObject.SetActive(false);
             }
             else if (batt < 75.0f)
             {
-                batteryIndicator.GetChild(3).gameObject.active = false;
+                batteryIndicator.GetChild(3).gameObject.SetActive(false);
             }
             else if (batt < 95.0f)
             {
-                batteryIndicator.GetChild(4).gameObject.active = false;
+                batteryIndicator.GetChild(4).gameObject.SetActive(false);
             }
-            Vector3 viewPos = Camera.main.WorldToViewportPoint(drone.transform.position);
-            viewPos.x = (viewPos.x - 0.5f) * 2 + 0.5f;
-            viewPos.y = (viewPos.y - 0.5f) * 2 + 0.5f;
-            HUD.anchoredPosition = new Vector3(viewPos.x * 1433, viewPos.y * 920, 0.0f);
-            bool isFullyVisible = IsVisibleFrom(HUD, Camera.main);
-            if (isFullyVisible)
-                navigationArrow.gameObject.active = false;
+
+            //Vector3 viewPos = Camera.main.WorldToViewportPoint(drone.transform.position);
+            Vector3 viewPos = Camera.main.WorldToScreenPoint(drone.transform.position);
+            viewPos.x = (viewPos.x - (canvas.rect.width/2)) * 2 + (canvas.rect.width / 2);
+            viewPos.y = (viewPos.y - (canvas.rect.height / 2)) * 2 + (canvas.rect.height / 2);
+            Debug.Log("viewPos x: " + viewPos.x);
+            Debug.Log("viewPos y: " + viewPos.y);
+            HUD.anchoredPosition = new Vector3(viewPos.x , viewPos.y, 0.0f);
+
+            bool isVisible = IsVisibleFrom(HUD, Camera.main);
+            if (isVisible)
+                navigationArrow.gameObject.SetActive(false);
             else
             {
-                navigationArrow.gameObject.active = true;
-                Vector3 targetDir = (HUD.anchoredPosition - new Vector2(716.0f, 206.0f)).normalized;
-                float angle = Mathf.Atan2(targetDir.y, targetDir.x) * Mathf.Rad2Deg;
-                navigationArrow.localEulerAngles = new Vector3(0, 0, angle);
-                navigationArrow.anchoredPosition = new Vector3(716.0f, 206.0f, 0.0f) + (targetDir * 500.0f);
+                //((canvas.rect.width / 2), (canvas.rect.height / 2)) --) center of canvas
+                navigationArrow.gameObject.SetActive(true);
+                Vector3 targetDirection = (HUD.anchoredPosition - new Vector2((canvas.rect.width / 2), (canvas.rect.height / 2))).normalized;
+                float angleTargetDirection = Mathf.Atan2(targetDirection.y, targetDirection.x) * Mathf.Rad2Deg;
+                navigationArrow.localEulerAngles = new Vector3(0, 0, angleTargetDirection);
+                navigationArrow.anchoredPosition = new Vector3((canvas.rect.width / 2), (canvas.rect.height / 2), 0.0f) + (targetDirection * 400.0f);
             }
-            if (dist < 2.0f)
+
+            if (dist < 1.0f)
             {
 
-                //HUD.gameObject.GetComponent<Image>().enabled = false;
-                mirrorDrone.gameObject.active = false;
+                mirrorDrone.gameObject.SetActive(false);
             }
             else
             {
-                //HUD.gameObject.GetComponent<Image>().enabled = true;
-                mirrorDrone.gameObject.active = true;
+                mirrorDrone.gameObject.SetActive(true);
             }
 
 
-            }
         }
+    }
 
 }

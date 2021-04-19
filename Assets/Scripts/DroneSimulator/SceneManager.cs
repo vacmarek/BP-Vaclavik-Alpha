@@ -1,4 +1,12 @@
-﻿using System.Collections;
+﻿/*
+ * Scene Manager - manages the scene
+ * 
+ * author: Marek Václavík
+ * login: xvacla26
+ * 
+ */
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,7 +19,9 @@ namespace UnityControllerForTello
         public HeadUpDisplay headUpDisplay { get; private set; }
 
         [HideInInspector]
-
+        GameObject cameraFrame;
+        GameObject canvas;
+        GameObject missions;
         public Quaternion finalInputs { get; private set; }
         public float elv;
         public float yaw;
@@ -41,6 +51,18 @@ namespace UnityControllerForTello
             headUpDisplay = FindObjectOfType<HeadUpDisplay>();
             if (!headUpDisplay)
                 Debug.Log("No HeadUpDisplay found");
+            //CameraView
+            cameraFrame = GameObject.Find("CameraFrame");
+            if (!cameraFrame)
+                Debug.Log("No CameraFrame found");
+            //Canvas
+            canvas = GameObject.Find("Canvas");
+            if (!canvas)
+                Debug.Log("No Canvas found");
+            //Canvas
+            missions = GameObject.Find("Missions");
+            if (!missions)
+                Debug.Log("No Missions found");
             Debug.Log("Begin Simul");            
         }
 
@@ -55,7 +77,6 @@ namespace UnityControllerForTello
         private void Update()
         {
             inputController.GetFlightCommmands();
-            //if in sim run the frame, else called from telloUpdate in flyonly
             RunFrame();
           
         }
@@ -67,16 +88,64 @@ namespace UnityControllerForTello
 
         }
 
+        public void ToggleMesh()
+        {
+            Debug.Log("ToggleMesh");
+            Camera.main.cullingMask ^= 1 << LayerMask.NameToLayer("Spatial Awareness");
+
+        }
+
+        public void ChangeCamera()
+        {
+            Debug.Log("ChangeCamera");
+            if (cameraFrame.transform.IsChildOf(headUpDisplay.transform))
+            {
+                cameraFrame.transform.SetParent(canvas.transform);
+                cameraFrame.transform.localPosition = new Vector3(700,-150,0);
+            }
+            else
+            {
+                cameraFrame.transform.SetParent(headUpDisplay.transform);
+                cameraFrame.transform.localPosition = new Vector3(500, 0, 0);
+            }
+                
+
+        }
+
+        public void ToggleMissions()
+        {
+            Debug.Log("ToggleMissions");
+            if (missions.activeSelf)
+            {
+                missions.SetActive(false);
+            }
+            else
+                missions.SetActive(true);
+        }
+
+        public void ToggleScale()
+        {
+            Debug.Log("ToggleScale");
+            if (headUpDisplay.transform.localScale == new Vector3(1,1,1))
+            {
+                headUpDisplay.transform.localScale = new Vector3(1.5f, 1.5f, 1);
+            }
+            else
+            {
+                headUpDisplay.transform.localScale = new Vector3(1, 1, 1);
+            }
+        }
+
         float timeSinceLastUpdate;
         float prevDeltaTime = 0;
         System.TimeSpan telloDeltaTime;
         public void RunFrame()
         {
             //Frame info
-            timeSinceLastUpdate = Time.time - prevDeltaTime;
-            prevDeltaTime = Time.time;
-            var deltaTime1 = (int)(timeSinceLastUpdate * 1000);
-            telloDeltaTime = new System.TimeSpan(0, 0, 0, 0, (deltaTime1));
+            //timeSinceLastUpdate = Time.time - prevDeltaTime;
+            //prevDeltaTime = Time.time;
+            //var deltaTime1 = (int)(timeSinceLastUpdate * 1000);
+            //telloDeltaTime = new System.TimeSpan(0, 0, 0, 0, (deltaTime1));
             //inputs
             var inputs = inputController.CheckFlightInputs();
 
@@ -93,9 +162,6 @@ namespace UnityControllerForTello
        
         Quaternion CalulateFinalInputs(float yaw, float elv, float roll, float pitch)
         {
-            //if (autoPilot.enabled)
-            //    inputController.speed = 1;
-
             elv *= inputController.speed;
             roll *= inputController.speed;
             pitch *= inputController.speed;

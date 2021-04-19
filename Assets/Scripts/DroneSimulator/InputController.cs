@@ -1,4 +1,12 @@
-﻿using System.Collections;
+﻿/*
+ * Input Controller - Manages Input and cotrols
+ * 
+ * author: Marek Václavík
+ * login: xvacla26
+ * 
+ */
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,16 +14,13 @@ namespace UnityControllerForTello
 {
     public class InputController : MonoBehaviour
     {
-        public enum InputType { Thrustmaster16000, Keyboard, Rift, ThrustmasterThrottle }
+        public enum InputType { XboxController, Keyboard}
         public InputType inputType = InputType.Keyboard;
 
-        enum FlipDir { Forward, Left, Backward, Right, ForwardRight, ForwardLeft, BackRight, BackLeft, None }
 
         public float rawYaw, rawElv, rawRoll, rawPitch;
-        float flipDir, flipDirX;
         public float speed;
 
-        Transform flipArrow;
         SceneManager sceneManager;
 
 
@@ -30,31 +35,29 @@ namespace UnityControllerForTello
 
         public void GetFlightCommmands()
         {
-            //if (Input.GetKeyDown(KeyCode.P) || Input.GetButton("ToggleAutopilot"))
-            //{
-            //    sceneManager.ToggleAutoPilot(true);
-            //}
-            if (Input.GetKeyDown(KeyCode.T) || Input.GetButton("TakeOff"))
+            if (Input.GetKeyDown(KeyCode.R) || Input.GetButtonDown("Reset"))
             {
                 sceneManager.Reset();
             }
-            //else if (Input.GetKeyDown(KeyCode.V) || Input.GetButton("StartEngines"))
-            //{
-            //    sceneManager.PrimeProps();
-            //}
-            //else if (Input.GetKeyDown(KeyCode.L) || Input.GetButton("Land"))
-            //{
-            //    sceneManager.Land();
-            //}
+            else if (Input.GetKeyDown(KeyCode.T) || Input.GetButtonDown("ToggleMesh"))
+            {
+                sceneManager.ToggleMesh();
+            }
+            else if (Input.GetKeyDown(KeyCode.C) || Input.GetButtonDown("ChangeCamera"))
+            {
+                sceneManager.ChangeCamera();
+            }
+            else if (Input.GetKeyDown(KeyCode.M) || Input.GetButtonDown("ToggleMissions")) 
+            {
+                sceneManager.ToggleMissions();
+            }
+            else if (Input.GetKeyDown(KeyCode.S) || Input.GetButtonDown("ToggleScales"))
+            {
+                sceneManager.ToggleScale();
+            }
         }
         public Quaternion CheckFlightInputs()
-        {          
-            //timeSinceLastUpdate = Time.time - prevDeltaTime;
-            //prevDeltaTime = Time.time;
-            //deltaTime1 = (int)(timeSinceLastUpdate * 1000);
-
-            //  Debug.Log(timeSinceLastUpdate * 1000);
-            // Debug.Log("check inputs");           
+        {              
             float lx = 0f;
             float ly = 0f;
             float rx = 0f;
@@ -68,26 +71,11 @@ namespace UnityControllerForTello
                     rx = Input.GetAxis("Keyboard Roll");
                     ry = Input.GetAxis("Keyboard Pitch");
                     break;
-                case InputType.ThrustmasterThrottle:
-                    ly = Input.GetAxis("Thrustmaster Throttle Elv");
-                    rx = Input.GetAxis("Thrustmaster Throttle Roll");
-                    ry = -Input.GetAxis("Thrustmaster Throttle Pitch");
-                    lx = Input.GetAxis("Thrustmaster Throttle Yaw");
-                    flipDir = Input.GetAxis("Thrustmaster Throttle Flip");
-                    flipDirX = Input.GetAxis("Thrustmaster Throttle Flip X");
-                    speed = -Input.GetAxis("Thrustmaster Throttle Speed");
-                    break;
-                case InputType.Thrustmaster16000:
+                case InputType.XboxController:
                     ly = (Input.GetAxis("Up") * 2);
                     rx =(Input.GetAxis("Roll") * 2);
                     ry =(-Input.GetAxis("Pitch") * 2);
                     lx =(Input.GetAxis("Yaw") * 2);
-                    break;
-                case InputType.Rift:
-                    lx = Input.GetAxis("Oculus Yaw");
-                    rx = Input.GetAxis("Oculus Roll");
-                    ry = -Input.GetAxis("Oculus Pitch");
-                    ly = -Input.GetAxis("Oculus Up");
                     break;
             }
 
@@ -105,9 +93,6 @@ namespace UnityControllerForTello
                 speed /= 2;
                 speed += .5f;
             }
-
-            if (inputType != InputType.ThrustmasterThrottle)
-                speed = 1;
 
             rawYaw = lx;
             rawElv = ly;
