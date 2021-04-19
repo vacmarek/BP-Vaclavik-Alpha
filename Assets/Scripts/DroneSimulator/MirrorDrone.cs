@@ -1,5 +1,5 @@
 ﻿/*
- * Mirror Drone - manages mirror drone and hid indicators
+ * Mirror Drone - manages mirror drone and his indicators
  * 
  * author: Marek Václavík
  * login: xvacla26
@@ -150,11 +150,14 @@ namespace UnityControllerForTello
             // Update is called once per frame
             void Update()
         {
-            CheckObstacles();
-            Debug.Log("closestObstacle: " + this.closestHit.distance);
+            //mirroring rotation
             transform.rotation = drone.rotation;
+
             speedVelocity = DroneSimulator.speedVelocity;
             speedDirection = DroneSimulator.speedDirection;
+            
+            //obtacles
+            CheckObstacles();
             float distanceToObstacle = closestHit.distance;
             if (distanceToObstacle < dangerFar)
             {
@@ -162,33 +165,27 @@ namespace UnityControllerForTello
                 dangerIndicator.GetChild(0).gameObject.SetActive(true);
                 dangerIndicator.GetChild(1).gameObject.SetActive(false);
                 dangerIndicator.GetChild(2).gameObject.SetActive(false);
-                //Vector3 dangerDirection = (this.closestHit.transform.position - drone.position);
-                //Debug.Log("smer: " + hitDirection);
-                //float mirrorAngle = Mathf.Atan2(mirrorDir.y, mirrorDir.x) * Mathf.Rad2Deg;
-                //dangerIndicator.rotation = Quaternion.LookRotation(hitDirection); //TODO..
+
                 ManageDangerDirection(hitDirection);
                 if (distanceToObstacle < dangerClose)
                 {
                     dangerIndicator.GetChild(0).gameObject.SetActive(true);
                     dangerIndicator.GetChild(1).gameObject.SetActive(true);
                     dangerIndicator.GetChild(2).gameObject.SetActive(true);
-                    //cubeRenderer.material.SetColor("_Color", Color.red);
                 }
                 else if (distanceToObstacle < dangerMid)
                 {
                     dangerIndicator.GetChild(0).gameObject.SetActive(true);
                     dangerIndicator.GetChild(1).gameObject.SetActive(true);
                     dangerIndicator.GetChild(2).gameObject.SetActive(false);
-                    //cubeRenderer.material.SetColor("_Color", Color.yellow);
                 }
             }
             else
             {
-                //cubeRenderer.material.SetColor("_Color", Color.green);
                 dangerIndicator.gameObject.SetActive(false);
             }
 
-
+            //speed indicator
             if (speedVelocity < 0.2f)
             {
                 speedIndicator.gameObject.SetActive(false);

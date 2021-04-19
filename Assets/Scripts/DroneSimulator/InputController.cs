@@ -28,10 +28,6 @@ namespace UnityControllerForTello
         {
             this.sceneManager = sceneManager;
         }
-        public void CustomStart()
-        {
-
-        }
 
         public void GetFlightCommmands()
         {

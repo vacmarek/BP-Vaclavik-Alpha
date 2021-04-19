@@ -16,7 +16,6 @@ namespace UnityControllerForTello
     {
         public MirrorDrone mirrorDrone { get; private set; }
         Rigidbody rigidBody;
-        InputController inputController;
         public float inputDrag, drag;
         SceneManager sceneManager;
         Vector3 lastPosition = Vector3.zero;
@@ -33,7 +32,6 @@ namespace UnityControllerForTello
             this.sceneManager = sceneManager;
             drone = GameObject.Find("UnityDrone").transform;
             rigidBody = drone.GetComponent<Rigidbody>();
-            inputController = sceneManager.inputController;
 
             rotors = drone.GetChild(3);
             if (!drone)

@@ -1,5 +1,5 @@
 /*
- * Mirror Drone - manages mirror drone and hid indicators
+ * Mirror Drone - manages rotation and value of distance to waypoints 
  * 
  * author: Marek Václavík
  * login: xvacla26

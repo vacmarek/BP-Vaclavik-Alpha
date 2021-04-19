@@ -68,8 +68,8 @@ namespace UnityControllerForTello
 
         private void Start()
         {
-            inputController.CustomStart();
             Debug.Log("Begin Sim- START");
+            inputController.CustomAwake(this);
             simulator.CustomStart(this);
             headUpDisplay.CustomStart();
         }
@@ -136,19 +136,9 @@ namespace UnityControllerForTello
             }
         }
 
-        float timeSinceLastUpdate;
-        float prevDeltaTime = 0;
-        System.TimeSpan telloDeltaTime;
         public void RunFrame()
         {
-            //Frame info
-            //timeSinceLastUpdate = Time.time - prevDeltaTime;
-            //prevDeltaTime = Time.time;
-            //var deltaTime1 = (int)(timeSinceLastUpdate * 1000);
-            //telloDeltaTime = new System.TimeSpan(0, 0, 0, 0, (deltaTime1));
-            //inputs
             var inputs = inputController.CheckFlightInputs();
-
 
             finalInputs = CalulateFinalInputs(inputs.x, inputs.y, inputs.z, inputs.w);
             yaw = finalInputs.x;
