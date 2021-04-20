@@ -15,13 +15,17 @@ public class WaypointManager : MonoBehaviour {
 
     public Transform cameraToFace; 
     public Transform drone;
+    TextMeshPro distance;
 
+    void Start()
+    {
+        distance = transform.gameObject.GetComponent<TextMeshPro>();
+    }
 
     // Update is called once per frame
     void Update() {
         transform.LookAt(transform.position + cameraToFace.transform.rotation * Vector3.forward, cameraToFace.transform.rotation * Vector3.up);
-        TextMeshPro distance = transform.gameObject.GetComponent<TextMeshPro>(); // TODO
-        float dist = Vector3.Distance(drone.position, transform.position); ;
+        float dist = Vector3.Distance(drone.position, transform.position);
         distance.text = Mathf.Round(dist * 100.0f) * 0.01f + "m";
     }
 }

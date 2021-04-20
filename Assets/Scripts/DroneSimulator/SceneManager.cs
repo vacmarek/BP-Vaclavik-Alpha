@@ -15,63 +15,27 @@ namespace UnityControllerForTello
     public class SceneManager : MonoBehaviour
     {
 
-        public DroneSimulator simulator { get; private set; }
-        public HeadUpDisplay headUpDisplay { get; private set; }
+        public DroneSimulator Simulator;
+        public HeadUpDisplay HeadUpDisplay;
+        public GameObject cameraFrame;
+        public GameObject canvas;
+        public GameObject missions;
 
-        [HideInInspector]
-        GameObject cameraFrame;
-        GameObject canvas;
-        GameObject missions;
         public Quaternion finalInputs { get; private set; }
         public float elv;
         public float yaw;
         public float pitch;
         public float roll;
 
-        //TelloAutoPilot autoPilot; neni potreba
-        public InputController inputController { get; private set; }
+        public InputController inputController;
 
-
-        void Awake()
-        {
-            //base.Awake();
-
-            inputController = FindObjectOfType<InputController>();
-            if (!inputController)
-                Debug.LogError("Missing an input controller");
-            else
-                inputController.CustomAwake(this);
-
-            //Simulator
-            simulator = FindObjectOfType<DroneSimulator>();
-            if (!simulator)
-                Debug.Log("No simulator found");
-
-            //HeadUpDisplay
-            headUpDisplay = FindObjectOfType<HeadUpDisplay>();
-            if (!headUpDisplay)
-                Debug.Log("No HeadUpDisplay found");
-            //CameraView
-            cameraFrame = GameObject.Find("CameraFrame");
-            if (!cameraFrame)
-                Debug.Log("No CameraFrame found");
-            //Canvas
-            canvas = GameObject.Find("Canvas");
-            if (!canvas)
-                Debug.Log("No Canvas found");
-            //Canvas
-            missions = GameObject.Find("Missions");
-            if (!missions)
-                Debug.Log("No Missions found");
-            Debug.Log("Begin Simul");            
-        }
 
         private void Start()
         {
             Debug.Log("Begin Sim- START");
             inputController.CustomAwake(this);
-            simulator.CustomStart(this);
-            headUpDisplay.CustomStart();
+            Simulator.CustomStart(this);
+            HeadUpDisplay.CustomStart();
         }
 
         private void Update()
@@ -84,7 +48,7 @@ namespace UnityControllerForTello
         public void Reset()
         {
             Debug.Log("Reset");
-            simulator.ResetSimulator();
+            Simulator.ResetSimulator();
 
         }
 
@@ -98,14 +62,14 @@ namespace UnityControllerForTello
         public void ChangeCamera()
         {
             Debug.Log("ChangeCamera");
-            if (cameraFrame.transform.IsChildOf(headUpDisplay.transform))
+            if (cameraFrame.transform.IsChildOf(HeadUpDisplay.transform))
             {
                 cameraFrame.transform.SetParent(canvas.transform);
                 cameraFrame.transform.localPosition = new Vector3(700,-150,0);
             }
             else
             {
-                cameraFrame.transform.SetParent(headUpDisplay.transform);
+                cameraFrame.transform.SetParent(HeadUpDisplay.transform);
                 cameraFrame.transform.localPosition = new Vector3(500, 0, 0);
             }
                 
@@ -126,13 +90,13 @@ namespace UnityControllerForTello
         public void ToggleScale()
         {
             Debug.Log("ToggleScale");
-            if (headUpDisplay.transform.localScale == new Vector3(1,1,1))
+            if (HeadUpDisplay.transform.localScale == new Vector3(1,1,1))
             {
-                headUpDisplay.transform.localScale = new Vector3(1.5f, 1.5f, 1);
+                HeadUpDisplay.transform.localScale = new Vector3(1.5f, 1.5f, 1);
             }
             else
             {
-                headUpDisplay.transform.localScale = new Vector3(1, 1, 1);
+                HeadUpDisplay.transform.localScale = new Vector3(1, 1, 1);
             }
         }
 

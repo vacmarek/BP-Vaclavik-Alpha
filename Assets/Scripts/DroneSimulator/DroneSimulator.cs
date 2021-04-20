@@ -23,14 +23,13 @@ namespace UnityControllerForTello
         public static Vector3 speedDirection;
 
         Transform rotors ;
-        Transform drone;
+        public Transform drone;
 
         // Use this for initialization
         public void CustomStart(SceneManager sceneManager)
         {
             
             this.sceneManager = sceneManager;
-            drone = GameObject.Find("UnityDrone").transform;
             rigidBody = drone.GetComponent<Rigidbody>();
 
             rotors = drone.GetChild(3);

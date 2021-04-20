@@ -23,9 +23,11 @@ namespace UnityControllerForTello
     public class MirrorDrone : MonoBehaviour
     {
         public float dangerFar = 1.0f, dangerMid = 0.6f, dangerClose = 0.3f;
-        Transform drone;
-        Transform speedIndicator;
-        Transform dangerIndicator;
+
+        public Transform drone;
+        public Transform speedIndicator;
+        public Transform dangerIndicator;
+
         float speedVelocity ;
         Vector3 speedDirection;
         RaycastHit closestHit;
@@ -38,10 +40,7 @@ namespace UnityControllerForTello
         // Start is called before the first frame update
         public void Start()
         {
-            this.drone = GameObject.Find("UnityDrone").transform;
-            speedIndicator = GameObject.Find("SpeedIndicator").transform;
-            dangerIndicator = GameObject.Find("DangerIndicator").transform;
-            
+
 
         }
 

@@ -17,40 +17,31 @@ namespace UnityControllerForTello
     public class HeadUpDisplay : MonoBehaviour
     {
         Transform MainCamera;
-        Transform drone;
-        Transform altitudeIndicator;
-        Transform batteryIndicator;
-        Transform mirrorDrone;
+        public Transform drone;
+        public Transform altitudeIndicator;
+        public Transform batteryIndicator;
+        public Transform mirrorDrone;
         RectTransform HUD;
-        RectTransform navigationArrow;
-        RectTransform canvas;
+        public RectTransform navigationArrow;
+        public RectTransform canvas;
 
-        Text distanceText;
-        Text altitudeText;
-        Text batteryText;
+        public Text distanceText;
+        public Text altitudeText;
+        public Text batteryText;
 
 
         float distanceToUser;
         float altitude;
+        Renderer altitutudeRenderer;
+        RectTransform altitudeTextTransform;
 
         // Start is called before the first frame update
         public void CustomStart()
         {
             MainCamera = Camera.main.gameObject.transform;
-            this.drone = GameObject.Find("UnityDrone").transform;
-            altitudeIndicator = GameObject.Find("Altimeter").transform.GetChild(0).GetChild(0).GetChild(1);
-            batteryIndicator = GameObject.Find("BatteryIndicator").transform.GetChild(0).GetChild(0);
-            navigationArrow = GameObject.Find("NavigationArrow").GetComponent<RectTransform>();
             HUD = transform.gameObject.GetComponent<RectTransform>();
-            mirrorDrone = GameObject.Find("MirrorDrone").transform;
-            canvas = GameObject.Find("Canvas").GetComponent<RectTransform>();
-
-            distanceText = GameObject.Find("DistanceText").GetComponent<Text>();
-            altitudeText = GameObject.Find("AltitudeText").GetComponent<Text>();
-            batteryText = GameObject.Find("BatteryText").GetComponent<Text>();
-
-
-
+            altitutudeRenderer = altitudeIndicator.gameObject.GetComponent<Renderer>();
+            altitudeTextTransform = altitudeText.gameObject.GetComponent<RectTransform>();
         }
 
         /// <summary>
@@ -146,10 +137,10 @@ namespace UnityControllerForTello
             altitudeIndicator.localPosition = new Vector3(altitudeIndicator.localPosition.x, altitposition, altitudeIndicator.localPosition.z);
 
             //set altitudeText transform next to a bar
-            altitudeText.gameObject.GetComponent<RectTransform>().localPosition = new Vector3(altitudeText.gameObject.GetComponent<RectTransform>().localPosition.x, -88 + (altitude * 50) / 2, altitudeText.gameObject.GetComponent<RectTransform>().localPosition.z); 
+            altitudeTextTransform.localPosition = new Vector3(altitudeTextTransform.localPosition.x, -88 + (altitude * 50) / 2, altitudeTextTransform.localPosition.z); 
             
             //changing color of bar based on altitude
-            var altitutudeRenderer = altitudeIndicator.gameObject.GetComponent<Renderer>();
+            
             if (altitude < 0.5f)
             {
                 altitutudeRenderer.material.SetColor("_Color", Color.red);
