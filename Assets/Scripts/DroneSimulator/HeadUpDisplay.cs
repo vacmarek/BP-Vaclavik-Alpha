@@ -12,10 +12,18 @@ using UnityEngine;
 using UnityEngine.UI;
 
 
+
 namespace UnityControllerForTello
 {
+    
     public class HeadUpDisplay : MonoBehaviour
     {
+        const float NavigationArrowOffset = 400.0f;
+        const float AltitudeIndicatorOffset = -174.0f;
+        const float AltitudeValueToTransformMultiplier = 50.0f;
+        const float AltitudeTextOffset = -88.0f;
+
+
         Transform MainCamera;
         public Transform drone;
         public Transform altitudeIndicator;
@@ -102,7 +110,7 @@ namespace UnityControllerForTello
             Ray ray1 = new Ray(this.drone.transform.position, Vector3.down);
             if (Physics.SphereCast(ray1, 0.01f, out hit))
             {
-                if (hit.transform.gameObject.layer == 31)
+                if (hit.transform.gameObject.layer == 31) //layer for spatialAwareness
                 {
                     altitude = hit.distance;
                 }
@@ -126,18 +134,18 @@ namespace UnityControllerForTello
             SetTarget();
 
             distanceToUser = Vector3.Distance(MainCamera.position, drone.position);
-            distanceText.text = Mathf.Round(distanceToUser * 100.0f) * 0.01f + "m";
+            distanceText.text = Mathf.Round(distanceToUser * 100.0f) * 0.01f + "m"; //Rounding
             
             CheckAltitude();
-            altitudeText.text = Mathf.Round(altitude * 100.0f) * 0.01f + "m";
-            
+            altitudeText.text = Mathf.Round(altitude * 100.0f) * 0.01f + "m";//Rounding
+
             //size of altitude bar based on altitude value
-            altitudeIndicator.localScale = new Vector3(altitudeIndicator.localScale.x, altitude * 50, altitudeIndicator.localScale.z);
-            float altitposition = -174.0f + (altitude * 50) / 2;
-            altitudeIndicator.localPosition = new Vector3(altitudeIndicator.localPosition.x, altitposition, altitudeIndicator.localPosition.z);
+            altitudeIndicator.localScale = new Vector3(altitudeIndicator.localScale.x, altitude * AltitudeValueToTransformMultiplier, altitudeIndicator.localScale.z);
+            float altititudeIndicatorPositionY = AltitudeIndicatorOffset + (altitude * AltitudeValueToTransformMultiplier) / 2;
+            altitudeIndicator.localPosition = new Vector3(altitudeIndicator.localPosition.x, altititudeIndicatorPositionY, altitudeIndicator.localPosition.z);
 
             //set altitudeText transform next to a bar
-            altitudeTextTransform.localPosition = new Vector3(altitudeTextTransform.localPosition.x, -88 + (altitude * 50) / 2, altitudeTextTransform.localPosition.z); 
+            altitudeTextTransform.localPosition = new Vector3(altitudeTextTransform.localPosition.x, AltitudeTextOffset + (altitude * AltitudeValueToTransformMultiplier) / 2, altitudeTextTransform.localPosition.z); 
             
             //changing color of bar based on altitude
             
@@ -155,8 +163,8 @@ namespace UnityControllerForTello
             }
 
             //simulated battery capacity
-            float batt = (600 - Time.time) / 6; 
-            batteryText.text = Mathf.Round(batt * 10.0f) * 0.1f + "%";
+            float batt = (600 - Time.time) / 6; //600 seconds in %
+            batteryText.text = Mathf.Round(batt * 10.0f) * 0.1f + "%"; //Rounding
 
             //baterry incicator bars
             if (batt < 15.0f)
@@ -192,7 +200,7 @@ namespace UnityControllerForTello
                 Vector3 targetDirection = (HUD.anchoredPosition - new Vector2((canvas.rect.width / 2), (canvas.rect.height / 2))).normalized;
                 float angleTargetDirection = Mathf.Atan2(targetDirection.y, targetDirection.x) * Mathf.Rad2Deg;
                 navigationArrow.localEulerAngles = new Vector3(0, 0, angleTargetDirection);
-                navigationArrow.anchoredPosition = new Vector3((canvas.rect.width / 2), (canvas.rect.height / 2), 0.0f) + (targetDirection * 400.0f);
+                navigationArrow.anchoredPosition = new Vector3((canvas.rect.width / 2), (canvas.rect.height / 2), 0.0f) + (targetDirection * NavigationArrowOffset);
             }
 
             // based on distace to user, gameObject mirror drone is active or non-active

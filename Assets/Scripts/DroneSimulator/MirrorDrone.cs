@@ -12,16 +12,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-static class Constants
-{
-    public const float NotAHitDistance = 100.0f;
-}
+
 
 
 namespace UnityControllerForTello
 {
+
     public class MirrorDrone : MonoBehaviour
     {
+        const float NotAHitDistance = 100.0f;
+
         public float dangerFar = 1.0f, dangerMid = 0.6f, dangerClose = 0.3f;
 
         public Transform drone;
@@ -54,7 +54,7 @@ namespace UnityControllerForTello
             Ray ray1 = new Ray(this.drone.transform.position, sideVector);
             if (Physics.SphereCast(ray1, 0.01f, out hit))
             {
-                if (hit.transform.gameObject.layer == 31 )
+                if (hit.transform.gameObject.layer == 31 ) //layer for spatialAwareness
                 {
                     if (hit.distance < this.closestHit.distance)
                     {
@@ -72,7 +72,7 @@ namespace UnityControllerForTello
         /// </summary>
         void CheckObstacles()
         {
-            this.closestHit.distance = Constants.NotAHitDistance;
+            this.closestHit.distance = NotAHitDistance;
             // Left
             ManageRays(-transform.right, sites.left);
 
@@ -193,7 +193,7 @@ namespace UnityControllerForTello
             {
                 speedIndicator.gameObject.SetActive(true);
                 speedIndicator.rotation = Quaternion.LookRotation(speedDirection);
-                speedIndicator.GetChild(0).localScale = new Vector3(speedVelocity * 2, speedVelocity * 2, speedIndicator.GetChild(0).localScale.z);
+                speedIndicator.GetChild(0).localScale = new Vector3(speedVelocity * 2, speedVelocity * 2, speedIndicator.GetChild(0).localScale.z); //size of tranform based on speedVelocity
 
             }
 
