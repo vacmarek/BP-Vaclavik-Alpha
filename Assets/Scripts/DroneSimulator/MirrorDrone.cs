@@ -11,22 +11,25 @@ using Microsoft.MixedReality.Toolkit.SpatialAwareness;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 
 
 
-namespace UnityControllerForTello
+namespace DroneSimulator
 {
 
     public class MirrorDrone : MonoBehaviour
     {
         const float NotAHitDistance = 100.0f;
 
-        public float dangerFar = 1.0f, dangerMid = 0.6f, dangerClose = 0.3f;
+        public float dangerFar = 0.7f, dangerMid = 0.5f, dangerClose = 0.3f;
 
         public Transform drone;
         public Transform speedIndicator;
         public Transform dangerIndicator;
+        public Text distanceText;
+
 
         float speedVelocity ;
         Vector3 speedDirection;
@@ -154,7 +157,9 @@ namespace UnityControllerForTello
 
             speedVelocity = DroneSimulator.speedVelocity;
             speedDirection = DroneSimulator.speedDirection;
-            
+
+            distanceText.transform.LookAt(distanceText.transform.position + Camera.main.gameObject.transform.rotation * Vector3.forward, Camera.main.gameObject.transform.rotation * Vector3.up);
+
             //obtacles
             CheckObstacles();
             float distanceToObstacle = closestHit.distance;

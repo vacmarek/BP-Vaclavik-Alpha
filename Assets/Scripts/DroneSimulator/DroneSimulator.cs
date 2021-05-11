@@ -10,7 +10,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace UnityControllerForTello
+namespace DroneSimulator
 {
     public class DroneSimulator : MonoBehaviour
     {

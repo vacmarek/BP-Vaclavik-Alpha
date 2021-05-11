@@ -250,7 +250,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 586577278}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -526,7 +526,7 @@ RectTransform:
   m_Children:
   - {fileID: 1888225469}
   m_Father: {fileID: 586577278}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -1323,7 +1323,6 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1.5, y: 1.5, z: 1}
   m_Children:
-  - {fileID: 1208670249}
   - {fileID: 716282280}
   - {fileID: 135675373}
   - {fileID: 1185282037}
@@ -1950,7 +1949,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 586577278}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -3541,8 +3540,9 @@ Transform:
   - {fileID: 375339465}
   - {fileID: 1213536598}
   - {fileID: 1998438737}
+  - {fileID: 1208670249}
   m_Father: {fileID: 586577278}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1185282038
 MonoBehaviour:
@@ -3562,6 +3562,7 @@ MonoBehaviour:
   drone: {fileID: 2109490791}
   speedIndicator: {fileID: 1213536598}
   dangerIndicator: {fileID: 1998438737}
+  distanceText: {fileID: 1208670250}
 --- !u!1 &1208670248
 GameObject:
   m_ObjectHideFlags: 0
@@ -3589,14 +3590,14 @@ RectTransform:
   m_GameObject: {fileID: 1208670248}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.0013211677, y: 0.0013211677, z: 0.0013211676}
   m_Children: []
-  m_Father: {fileID: 586577278}
-  m_RootOrder: 0
+  m_Father: {fileID: 1185282037}
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 3, y: -257.7}
+  m_AnchoredPosition: {x: 0.0039634705, y: -0.053894043}
   m_SizeDelta: {x: 250, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1208670250
@@ -5707,7 +5708,7 @@ Transform:
   m_Children:
   - {fileID: 3879276850543487704}
   m_Father: {fileID: 586577278}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4174525777767549017
 Transform:

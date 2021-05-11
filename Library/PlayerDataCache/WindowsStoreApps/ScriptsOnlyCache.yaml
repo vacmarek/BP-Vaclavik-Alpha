@@ -1,11 +1,11 @@
 ScriptsOnlyBuild:
   usedScripts:
     Assembly-CSharp.dll:
-    - UnityControllerForTello.DroneSimulator
-    - UnityControllerForTello.HeadUpDisplay
-    - UnityControllerForTello.InputController
-    - UnityControllerForTello.MirrorDrone
-    - UnityControllerForTello.SceneManager
+    - DroneSimulator.DroneSimulator
+    - DroneSimulator.InputController
+    - DroneSimulator.MirrorDrone
+    - DroneSimulator.SceneManager
+    - HeadUpDisplay
     - WaypointManager
     Microsoft.MixedReality.Toolkit.Editor.Utilities.dll:
     - Microsoft.MixedReality.Toolkit.Utilities.Editor.ProjectPreferences
@@ -487,9 +487,9 @@ ScriptsOnlyBuild:
     className: GroupTrack
   - hash:
       serializedVersion: 2
-      Hash: 24e3358a918b3882cd55881bf01ea2d5
+      Hash: 15d99c63b7177391ae1eff13ca838f6b
     assemblyName: Assembly-CSharp.dll
-    namespaceName: UnityControllerForTello
+    namespaceName: DroneSimulator
     className: SceneManager
   - hash:
       serializedVersion: 2
@@ -891,7 +891,7 @@ ScriptsOnlyBuild:
       serializedVersion: 2
       Hash: 041c015e64aa5d5ed8cfcd4faa3fe109
     assemblyName: Assembly-CSharp.dll
-    namespaceName: UnityControllerForTello
+    namespaceName: DroneSimulator
     className: InputController
   - hash:
       serializedVersion: 2
@@ -907,9 +907,9 @@ ScriptsOnlyBuild:
     className: Shadow
   - hash:
       serializedVersion: 2
-      Hash: 2bbbdeddcb1635b36c49000b0580ed40
+      Hash: 943de81850427d5059350e5b026b4fdc
     assemblyName: Assembly-CSharp.dll
-    namespaceName: UnityControllerForTello
+    namespaceName: DroneSimulator
     className: MirrorDrone
   - hash:
       serializedVersion: 2
@@ -1477,9 +1477,9 @@ ScriptsOnlyBuild:
     className: RotationAxisConstraint
   - hash:
       serializedVersion: 2
-      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
+      Hash: 7e5ced52a884b2c2aeae1d0f074c9b35
     assemblyName: Assembly-CSharp.dll
-    namespaceName: UnityControllerForTello
+    namespaceName: 
     className: HeadUpDisplay
   - hash:
       serializedVersion: 2
@@ -2125,9 +2125,9 @@ ScriptsOnlyBuild:
     className: RadialView
   - hash:
       serializedVersion: 2
-      Hash: c0acb5ad65e9cc13c3d51cfd005b092c
+      Hash: bc56db54656a3a249eec65039b2b1e49
     assemblyName: Assembly-CSharp.dll
-    namespaceName: UnityControllerForTello
+    namespaceName: DroneSimulator
     className: DroneSimulator
   - hash:
       serializedVersion: 2
